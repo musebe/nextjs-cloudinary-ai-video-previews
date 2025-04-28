@@ -116,3 +116,9 @@ Also works great on **Netlify** or **Render**.
 - 💫 [Motion.dev](https://motion.dev)
 - 🛠 [shadcn/ui](https://ui.shadcn.com)
 
+
+
+TODO 
+
+Upload Button Component - Popup Card 
+Upload Stream progress bar 
