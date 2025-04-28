@@ -2,6 +2,7 @@
 
 import type { Metadata } from 'next';
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import 'next-cloudinary/dist/cld-video-player.css';
 import './globals.css';
 
 import { Navbar } from '@/components/Navbar';

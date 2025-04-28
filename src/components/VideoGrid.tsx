@@ -3,20 +3,12 @@
 
 import { useMemo } from 'react';
 import { motion, Variants } from 'motion/react';
-import { VideoCard } from './VideoCard';
-
-export interface VideoItem {
-  id: string;
-  title?: string;
-  originalUrl: string;
-  previewUrl: string;
-}
+import { VideoCard, VideoItem } from './VideoCard';
 
 const containerVariants: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.07 } },
 };
-
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
   show: { opacity: 1, y: 0 },
@@ -27,7 +19,6 @@ interface VideoGridProps {
 }
 
 export function VideoGrid({ videos }: VideoGridProps) {
-  // filter and reverse so newest first
   const sorted = useMemo(
     () => videos.filter((v): v is VideoItem => Boolean(v && v.id)).reverse(),
     [videos]
@@ -43,9 +34,9 @@ export function VideoGrid({ videos }: VideoGridProps) {
     >
       {sorted.map((video) => (
         <motion.li
-          key={video.id} // ← unique key prop
+          key={video.id}
           variants={itemVariants}
-          layout // helps Motion with layout shifts
+          layout
           role='listitem'
         >
           <VideoCard video={video} />

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { motion } from 'motion/react';
 import { Play } from 'lucide-react';
+import VideoPlayer from './VideoPlayer';
+import PreviewPlayer from './PreviewPlayer';
 
 export interface VideoItem {
   id: string;
@@ -28,33 +30,30 @@ export function VideoCard({ video }: VideoCardProps) {
         </CardHeader>
         <CardContent className='flex flex-col gap-4'>
           {/* Original Video */}
-          <div className='relative aspect-video w-full bg-black'>
-            <video
-              src={video.originalUrl}
-              controls
-              className='object-cover w-full h-full'
-            />
-          </div>
-          {/* AI Preview */}
-          <motion.div
-            className='relative aspect-video w-full bg-black group-hover:ring-2 group-hover:ring-primary'
-            initial={{ opacity: 0.8 }}
-            whileHover={{ opacity: 1 }}
-          >
-            <video
-              src={video.previewUrl}
-              muted
-              loop
-              autoPlay={false}
-              playsInline
-              className='object-cover w-full h-full'
-            />
-            <div className='absolute inset-0 flex items-center justify-center'>
-              <Play className='w-12 h-12 text-white/80' />
+          <section>
+            <h3 className='mb-1 font-semibold text-sm'>Original</h3>
+            <div className='relative aspect-video w-full bg-black'>
+              <VideoPlayer src={video.originalUrl} playsInline />
             </div>
-          </motion.div>
+          </section>
+
+          {/* AI Preview */}
+          <section>
+            <h3 className='mb-1 font-semibold text-sm'>AI Preview</h3>
+            <motion.div
+              className='relative aspect-video w-full bg-black group-hover:ring-2 group-hover:ring-primary'
+              initial={{ opacity: 0.8 }}
+              whileHover={{ opacity: 1 }}
+            >
+              <PreviewPlayer src={video.previewUrl} />
+              <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
+                <Play className='w-12 h-12 text-white/80' />
+              </div>
+            </motion.div>
+          </section>
         </CardContent>
       </Link>
     </Card>
   );
 }
+export default VideoCard

@@ -3,7 +3,8 @@
 
 import { useState, useCallback } from 'react';
 import { VideoUploadModal } from '@/components/VideoUploadModal';
-import { VideoGrid, VideoItem } from '@/components/VideoGrid';
+import { VideoGrid } from './VideoGrid';
+import type { VideoItem } from './VideoCard';
 
 export default function HomeClient({
   initialVideos,
