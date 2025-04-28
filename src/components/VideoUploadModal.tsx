@@ -7,10 +7,10 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
+  DialogDescription, // ✅ import this
 } from '@/components/ui/dialog';
 import { ShimmerButton } from './magicui/shimmer-button';
 import { VideoUploader, UploadResponse } from './VideoUploader';
-
 
 export function VideoUploadModal({
   onUploadSuccess,
@@ -27,6 +27,13 @@ export function VideoUploadModal({
 
       <DialogContent className='max-w-lg p-6'>
         <DialogTitle>Upload & Preview</DialogTitle>
+
+        {/* ✅ ADD THIS */}
+        <DialogDescription>
+          Select a video file to upload and generate a preview.
+        </DialogDescription>
+
+        {/* Your uploader */}
         <VideoUploader
           onUploadSuccess={(data) => {
             onUploadSuccess?.(data);
