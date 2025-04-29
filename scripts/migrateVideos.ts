@@ -13,8 +13,8 @@ async function migrate() {
   const videos = JSON.parse(txt)
 
   const redis = new Redis({
-    url: 'https://grown-pigeon-19155.upstash.io',
-    token: 'AUrTAAIjcDE4ZGI1NjgwMmQ1MGE0OTY3OTU0NTVkY2UzOTYxODdhOHAxMA',
+    url: '',
+    token: '',
   })
 
   await redis.set('videos', JSON.stringify(videos, null, 2))
