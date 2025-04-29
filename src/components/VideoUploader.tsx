@@ -1,4 +1,3 @@
-// src/components/VideoUploader.tsx
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
@@ -20,14 +19,21 @@ export interface UploadResponse {
 
 export function VideoUploader({
   onUploadSuccess,
+  onUploadingChange, // ← NEW
 }: {
   onUploadSuccess?: (data: UploadResponse) => void;
+  onUploadingChange?: (uploading: boolean) => void;
 }) {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [duration, setDuration] = useState<number>(8);
   const [uploading, setUploading] = useState<boolean>(false);
   const xhrRef = useRef<XMLHttpRequest | null>(null);
+
+  // 🚨 Inform parent of uploading state whenever it changes
+  useEffect(() => {
+    onUploadingChange?.(uploading);
+  }, [uploading, onUploadingChange]);
 
   // abort in-flight upload if unmounted
   useEffect(() => () => xhrRef.current?.abort(), []);
@@ -36,6 +42,8 @@ export function VideoUploader({
 
   const upload = useCallback(() => {
     if (!file || uploading) return;
+
+    // 📝 Step 1: kick off
     setUploading(true);
     toast('🔄 Upload started…', { icon: '⏳' });
 
@@ -43,6 +51,7 @@ export function VideoUploader({
     form.append('file', file);
     form.append('duration', String(duration));
 
+    // 📝 Step 2: send via XHR to our API
     const xhr = new XMLHttpRequest();
     xhrRef.current = xhr;
 
@@ -73,6 +82,8 @@ export function VideoUploader({
   return (
     <div className='space-y-4'>
       <Label>Choose a video</Label>
+
+      {/* Dropzone UI */}
       <Dropzone
         onDrop={(accepted) => accepted[0] && setFile(accepted[0])}
         maxFiles={1}
@@ -97,6 +108,7 @@ export function VideoUploader({
         )}
       </Dropzone>
 
+      {/* Duration Slider */}
       <div className='space-y-1'>
         <Label>Preview duration: {duration}s</Label>
         <input
@@ -109,6 +121,7 @@ export function VideoUploader({
         />
       </div>
 
+      {/* Upload Button */}
       <Button
         onClick={upload}
         disabled={!isValid || uploading}

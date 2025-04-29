@@ -7,7 +7,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
-  DialogDescription, // ✅ import this
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { ShimmerButton } from './magicui/shimmer-button';
 import { VideoUploader, UploadResponse } from './VideoUploader';
@@ -18,6 +18,7 @@ export function VideoUploadModal({
   onUploadSuccess?: (data: UploadResponse) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -28,13 +29,19 @@ export function VideoUploadModal({
       <DialogContent className='max-w-lg p-6'>
         <DialogTitle>Upload & Preview</DialogTitle>
 
-        {/* ✅ ADD THIS */}
         <DialogDescription>
           Select a video file to upload and generate a preview.
         </DialogDescription>
 
-        {/* Your uploader */}
+        {/* ⚠️ Show this warning only while uploading */}
+        {uploading && (
+          <p className='mt-2 mb-4 text-sm text-yellow-700'>
+            ⚠️ Upload in progress… please do not close this dialog.
+          </p>
+        )}
+
         <VideoUploader
+          onUploadingChange={setUploading}
           onUploadSuccess={(data) => {
             onUploadSuccess?.(data);
             setOpen(false);
