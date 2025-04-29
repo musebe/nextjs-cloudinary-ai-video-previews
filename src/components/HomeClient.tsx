@@ -4,6 +4,7 @@
 import { useState, useCallback } from 'react';
 import { VideoUploadModal } from '@/components/VideoUploadModal';
 import { VideoGrid } from './VideoGrid';
+import { thumbnailUrl } from '@/lib/transforms';
 import type { VideoItem } from './VideoCard';
 
 export default function HomeClient({
@@ -13,17 +14,25 @@ export default function HomeClient({
 }) {
   const [videos, setVideos] = useState<VideoItem[]>(initialVideos);
 
+  /**
+   * When a user uploads, Cloudinary responds with:
+   *   publicId, format, url (full MP4), preview (8s MP4), [title]
+   */
   const handleUploadSuccess = useCallback(
     (resp: {
       publicId: string;
       format: string;
       url: string;
       preview: string;
+      title?: string;
     }) => {
       const newVideo: VideoItem = {
         id: resp.publicId,
+        title: resp.title,
         originalUrl: resp.url,
         previewUrl: resp.preview,
+        originalPoster: thumbnailUrl(resp.publicId, 400),
+        previewPoster: thumbnailUrl(resp.publicId, 400),
       };
       setVideos((prev) => [newVideo, ...prev]);
     },

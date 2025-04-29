@@ -13,6 +13,8 @@ export interface VideoItem {
   title?: string;
   originalUrl: string;
   previewUrl: string;
+  originalPoster: string; // ← JPG for <VideoPlayer>
+  previewPoster: string; // ← JPG for <PreviewPlayer>
 }
 
 interface VideoCardProps {
@@ -28,16 +30,21 @@ export function VideoCard({ video }: VideoCardProps) {
             {video.title ?? `Video ${video.id}`}
           </CardTitle>
         </CardHeader>
+
         <CardContent className='flex flex-col gap-4'>
-          {/* Original Video */}
+          {/* Original Full-Length Video */}
           <section>
             <h3 className='mb-1 font-semibold text-sm'>Original</h3>
             <div className='relative aspect-video w-full bg-black'>
-              <VideoPlayer src={video.originalUrl} playsInline />
+              <VideoPlayer
+                src={video.originalUrl}
+                poster={video.originalPoster}
+                playsInline
+              />
             </div>
           </section>
 
-          {/* AI Preview */}
+          {/* AI-Generated Preview */}
           <section>
             <h3 className='mb-1 font-semibold text-sm'>AI Preview</h3>
             <motion.div
@@ -45,7 +52,10 @@ export function VideoCard({ video }: VideoCardProps) {
               initial={{ opacity: 0.8 }}
               whileHover={{ opacity: 1 }}
             >
-              <PreviewPlayer src={video.previewUrl} />
+              <PreviewPlayer
+                src={video.previewUrl}
+                poster={video.previewPoster}
+              />
               <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
                 <Play className='w-12 h-12 text-white/80' />
               </div>
@@ -56,4 +66,5 @@ export function VideoCard({ video }: VideoCardProps) {
     </Card>
   );
 }
-export default VideoCard
+
+export default VideoCard;

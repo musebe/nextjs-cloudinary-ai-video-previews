@@ -1,24 +1,29 @@
+// src/components/VideoPlayer.tsx
 'use client';
 
 interface VideoPlayerProps {
-  /** Direct URL to an MP4 */
+  /** MP4 source URL */
   src: string;
-  /** Show native controls? */
+  /** Optional poster image URL (JPG/PNG) */
+  poster?: string;
+  /** Show native browser controls? */
   controls?: boolean;
   /** iOS inline playback? */
   playsInline?: boolean;
-  /** Extra CSS classes */
+  /** Tailwind/CSS classes */
   className?: string;
 }
 
 export default function VideoPlayer({
   src,
+  poster,
   controls = true,
   playsInline = false,
   className = 'w-full aspect-video rounded-lg shadow bg-black object-cover',
 }: VideoPlayerProps) {
   return (
     <video
+      poster={poster} // ← mobile & desktop use this thumbnail
       controls={controls}
       playsInline={playsInline}
       preload='metadata'
