@@ -32,14 +32,14 @@ export function VideoGrid({ videos }: VideoGridProps) {
       role='list'
       className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'
     >
-      {sorted.map((video) => (
+      {sorted.map((video, index) => (
         <motion.li
           key={video.id}
           variants={itemVariants}
           layout
           role='listitem'
         >
-          <VideoCard video={video} />
+          <VideoCard video={video} index={index} />
         </motion.li>
       ))}
     </motion.ul>

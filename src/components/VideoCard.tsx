@@ -13,21 +13,33 @@ export interface VideoItem {
   title?: string;
   originalUrl: string;
   previewUrl: string;
-  originalPoster: string; // ← JPG for <VideoPlayer>
-  previewPoster: string; // ← JPG for <PreviewPlayer>
+  originalPoster: string;
+  previewPoster: string;
 }
 
 interface VideoCardProps {
   video: VideoItem;
+  index?: number;
 }
 
-export function VideoCard({ video }: VideoCardProps) {
+const getEmojiForIndex = (index: number): string => {
+  const themedEmojis = ['📹', '🧠', '🤖'];
+  if (index === 0) return '🥇';
+  if (index === 1) return '🥈';
+  if (index === 2) return '🥉';
+  return themedEmojis[(index - 3) % themedEmojis.length];
+};
+
+export function VideoCard({ video, index = 0 }: VideoCardProps) {
+  const emoji = getEmojiForIndex(index);
+  const fallbackTitle = `${emoji} 🎬 Video #${index + 1}`;
+
   return (
     <Card className='flex flex-col hover:shadow-lg transition-shadow'>
       <Link href={`/videos/${video.id}`} className='flex flex-col flex-1'>
         <CardHeader>
           <CardTitle className='text-lg line-clamp-2'>
-            {video.title ?? `Video ${video.id}`}
+            {video.title ?? fallbackTitle}
           </CardTitle>
         </CardHeader>
 

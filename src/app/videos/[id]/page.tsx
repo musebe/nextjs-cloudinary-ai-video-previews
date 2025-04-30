@@ -19,10 +19,14 @@ export async function generateMetadata({
   params: Promise<Params>;
 }) {
   const { id } = await params;
+
   return {
-    title: `Preview • ${id}`,
-    openGraph: { title: `Preview • ${id}` },
-  };
+    title: '🎬 Video Preview',
+    openGraph: {
+      title: '🎬 Video Preview',
+      description: `AI-generated video preview for ${id}`,
+    },
+  } as Metadata;
 }
 
 export default async function VideoDetail({
@@ -36,22 +40,41 @@ export default async function VideoDetail({
   const originalUrl = cld.video(publicId).format('mp4').quality('auto').toURL();
   const aiPreview = previewUrl(id, 8);
 
-  // generate posters here on the server
   const originalPoster = thumbnailUrl(id, 800);
   const previewPoster = thumbnailUrl(id, 800);
 
   return (
-    <main className='min-h-screen bg-gray-50 p-6 space-y-6'>
-      <h1 className='text-center text-2xl font-bold'>Preview: {id}</h1>
-      <div className='grid gap-6 md:grid-cols-2'>
-        <section>
-          <h2 className='mb-2 text-lg font-semibold'>Original Video</h2>
-          <VideoPlayer src={originalUrl} poster={originalPoster} playsInline />
+    <main className='min-h-[70vh] bg-gradient-to-b from-white to-gray-50 p-6 space-y-10'>
+      <div className='text-center'>
+        <h1 className='text-3xl font-extrabold text-gray-800'>
+          🎬 Video Preview
+        </h1>
+        <p className='text-gray-500 text-sm mt-1'>
+          Enjoy the full video and AI-generated snippet
+        </p>
+      </div>
+
+      <div className='grid gap-10 md:grid-cols-2 max-w-6xl mx-auto'>
+        {/* Original Video */}
+        <section className='space-y-2'>
+          <h2 className='text-xl font-semibold text-gray-700'>
+            Original Video
+          </h2>
+          <div className='relative aspect-video rounded-lg overflow-hidden shadow'>
+            <VideoPlayer
+              src={originalUrl}
+              poster={originalPoster}
+              playsInline
+            />
+          </div>
         </section>
 
-        <section>
-          <h2 className='mb-2 text-lg font-semibold'>AI Preview</h2>
-          <PreviewPlayer src={aiPreview} poster={previewPoster} />
+        {/* AI Preview */}
+        <section className='space-y-2'>
+          <h2 className='text-xl font-semibold text-gray-700'>AI Preview</h2>
+          <div className='relative aspect-video rounded-lg overflow-hidden shadow'>
+            <PreviewPlayer src={aiPreview} poster={previewPoster} />
+          </div>
         </section>
       </div>
     </main>
